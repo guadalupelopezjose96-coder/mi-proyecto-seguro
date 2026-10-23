@@ -1,11 +1,3 @@
 AVISOS DE SOFTWARE DE CODIGO ABIERTO DE TERCEROS (POL-SEC-OSS-001)
-Fecha: 2026-10-31T02:47:17Z
------------------------------------------------------------------
-Paquete: Cargo.lock (null)
-PURL: N/A
-Licencia SPDX: Ver repositorio origen
------------------------------------------------------------------
-Paquete: sovereign-multi-entity-governor (1.0.0)
-PURL: pkg:cargo/sovereign-multi-entity-governor@1.0.0
-Licencia SPDX: Ver repositorio origen
+Fecha: 2026-10-23T17:42:44Z
 -----------------------------------------------------------------

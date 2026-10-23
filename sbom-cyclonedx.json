@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:d9f51ca2-858d-4cfa-8741-df2278a84e9e",
+  "serialNumber": "urn:uuid:47b2df52-4f3e-4582-8998-213e2ae9a3a0",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-31T02:47:16+00:00",
+    "timestamp": "2026-10-23T17:42:44+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "4fddadbc-ae4a-4b4b-b0c9-8bc3f84a4b0a",
+      "bom-ref": "7425b348-b48f-4b67-83f1-1bd02bc89406",
       "type": "application",
       "name": ".",
       "properties": [
@@ -31,55 +31,10 @@
       ]
     }
   },
-  "components": [
-    {
-      "bom-ref": "c110cb16-867c-4597-bae7-3414755c199d",
-      "type": "application",
-      "name": "Cargo.lock",
-      "properties": [
-        {
-          "name": "aquasecurity:trivy:Class",
-          "value": "lang-pkgs"
-        },
-        {
-          "name": "aquasecurity:trivy:Type",
-          "value": "cargo"
-        }
-      ]
-    },
-    {
-      "bom-ref": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
-      "type": "library",
-      "name": "sovereign-multi-entity-governor",
-      "version": "1.0.0",
-      "purl": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
-      "properties": [
-        {
-          "name": "aquasecurity:trivy:PkgID",
-          "value": "sovereign-multi-entity-governor@1.0.0"
-        },
-        {
-          "name": "aquasecurity:trivy:PkgType",
-          "value": "cargo"
-        }
-      ]
-    }
-  ],
+  "components": [],
   "dependencies": [
     {
-      "ref": "4fddadbc-ae4a-4b4b-b0c9-8bc3f84a4b0a",
-      "dependsOn": [
-        "c110cb16-867c-4597-bae7-3414755c199d"
-      ]
-    },
-    {
-      "ref": "c110cb16-867c-4597-bae7-3414755c199d",
-      "dependsOn": [
-        "pkg:cargo/sovereign-multi-entity-governor@1.0.0"
-      ]
-    },
-    {
-      "ref": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
+      "ref": "7425b348-b48f-4b67-83f1-1bd02bc89406",
       "dependsOn": []
     }
   ],

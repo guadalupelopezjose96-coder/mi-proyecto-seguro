@@ -1,0 +1,76 @@
+name: "POL-SEC-OSS-001: Auditoria Legal, Seguridad y SBOM"
+
+on:
+  push:
+    branches: [ "main", "master", "release/*" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+  security-events: write
+  pull-requests: write
+
+jobs:
+  oss_governance_gate:
+    name: "Gatekeeper: Semaforo de Licencias, CVE y SBOM"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout del Codigo Fuente
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Verificar existencia de Lockfiles
+        run: |
+          if [ -f "package.json" ] && [ ! -f "package-lock.json" ] && [ ! -f "yarn.lock" ] && [ ! -f "pnpm-lock.yaml" ]; then
+            echo "::error::Violacion Seccion 3: Proyecto Node.js sin lockfile."
+            exit 1
+          fi
+          if [ -f "Cargo.toml" ] && [ ! -f "Cargo.lock" ]; then
+            echo "::error::Violacion Seccion 3: Proyecto Rust sin Cargo.lock."
+            exit 1
+          fi
+
+      - name: 3. Generar SBOM Multi-Lenguaje (CycloneDX) con Syft
+        uses: anchore/sbom-action@v0
+        with:
+          path: ./
+          format: cyclonedx-json
+          output-file: sbom-cyclonedx.json
+          upload-artifact: false
+
+      - name: 4. Evaluar Semaforo de Licencias con Conftest (OPA)
+        run: |
+          wget -q https://github.com/open-policy-agent/conftest/releases/download/v0.54.0/conftest_0.54.0_Linux_x86_64.tar.gz
+          tar xzf conftest_0.54.0_Linux_x86_64.tar.gz
+          sudo mv conftest /usr/local/bin/
+          conftest test sbom-cyclonedx.json -p .ci/policies/license_policy.rego --all-namespaces
+
+      - name: 5. Escaneo de Vulnerabilidades y Secretos con Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          scanners: 'vuln,secret,license'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+          exit-code: '1'
+
+      - name: 6. Generar Archivo Oficial THIRD-PARTY-NOTICES.txt
+        if: success()
+        run: |
+          echo "AVISOS DE SOFTWARE DE CODIGO ABIERTO DE TERCEROS (POL-SEC-OSS-001)" > THIRD-PARTY-NOTICES.txt
+          echo "Fecha: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> THIRD-PARTY-NOTICES.txt
+          echo "-----------------------------------------------------------------" >> THIRD-PARTY-NOTICES.txt
+          jq -r '.components[]? | "Paquete: \(.name) (\(.version))\nPURL: \(.purl // "N/A")\nLicencia SPDX: \([.licenses[]?.license.id // .licenses[]?.license.name] | join(", "))\n-----------------------------------------------------------------"' sbom-cyclonedx.json >> THIRD-PARTY-NOTICES.txt
+
+      - name: 7. Archivar Evidencia Legal y SBOM Inmutable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-evidence-${{ github.sha }}
+          path: |
+            sbom-cyclonedx.json
+            THIRD-PARTY-NOTICES.txt
+          retention-days: 90
