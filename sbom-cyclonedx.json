@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.7.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.7",
-  "serialNumber": "urn:uuid:47b2df52-4f3e-4582-8998-213e2ae9a3a0",
+  "serialNumber": "urn:uuid:fba63fe4-32f6-4f35-91e8-5dec34dbd84b",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-23T17:42:44+00:00",
+    "timestamp": "2026-11-02T14:35:28+00:00",
     "tools": {
       "components": [
         {
@@ -20,7 +20,7 @@
       ]
     },
     "component": {
-      "bom-ref": "7425b348-b48f-4b67-83f1-1bd02bc89406",
+      "bom-ref": "48aeef4a-27b1-4145-8da4-ba4a1c42c190",
       "type": "application",
       "name": ".",
       "properties": [
@@ -31,10 +31,55 @@
       ]
     }
   },
-  "components": [],
+  "components": [
+    {
+      "bom-ref": "19ba68db-b025-40f0-bf71-8d9a5aebbba1",
+      "type": "application",
+      "name": "Cargo.lock",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:Class",
+          "value": "lang-pkgs"
+        },
+        {
+          "name": "aquasecurity:trivy:Type",
+          "value": "cargo"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
+      "type": "library",
+      "name": "sovereign-multi-entity-governor",
+      "version": "1.0.0",
+      "purl": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:PkgID",
+          "value": "sovereign-multi-entity-governor@1.0.0"
+        },
+        {
+          "name": "aquasecurity:trivy:PkgType",
+          "value": "cargo"
+        }
+      ]
+    }
+  ],
   "dependencies": [
     {
-      "ref": "7425b348-b48f-4b67-83f1-1bd02bc89406",
+      "ref": "19ba68db-b025-40f0-bf71-8d9a5aebbba1",
+      "dependsOn": [
+        "pkg:cargo/sovereign-multi-entity-governor@1.0.0"
+      ]
+    },
+    {
+      "ref": "48aeef4a-27b1-4145-8da4-ba4a1c42c190",
+      "dependsOn": [
+        "19ba68db-b025-40f0-bf71-8d9a5aebbba1"
+      ]
+    },
+    {
+      "ref": "pkg:cargo/sovereign-multi-entity-governor@1.0.0",
       "dependsOn": []
     }
   ],
